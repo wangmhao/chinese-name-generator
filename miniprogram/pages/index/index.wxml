@@ -1,0 +1,108 @@
+<view class="container">
+  <!-- 顶部宣传图 -->
+  <view class="banner">
+    <image class="banner-image" src="/images/banner.png" mode="aspectFill"></image>
+    <view class="banner-text">
+      <text class="title">🎯 专业宝宝起名</text>
+      <text class="subtitle">结合生辰八字·五行分析·寓意美好</text>
+    </view>
+  </view>
+
+  <!-- 功能特点 -->
+  <view class="features">
+    <view class="feature-item">
+      <image class="feature-icon" src="/images/calendar.png"></image>
+      <text class="feature-text">生辰八字分析</text>
+    </view>
+    <view class="feature-item">
+      <image class="feature-icon" src="/images/balance.png"></image>
+      <text class="feature-text">五行平衡补益</text>
+    </view>
+    <view class="feature-item">
+      <image class="feature-icon" src="/images/star.png"></image>
+      <text class="feature-text">寓意评分系统</text>
+    </view>
+  </view>
+
+  <!-- 使用状态 -->
+  <view class="usage-card">
+    <view class="usage-info">
+      <text class="usage-title">使用次数</text>
+      <text class="usage-count">{{usageCount}}/{{freeCount}}</text>
+    </view>
+    <view class="usage-progress">
+      <progress percent="{{progress}}" stroke-width="6" activeColor="#8B4513" />
+    </view>
+  </view>
+
+  <!-- 开始按钮 -->
+  <view class="action-buttons">
+    <block wx:if="{{canUse}}">
+      <button class="start-btn" bindtap="startNaming">
+        <text class="btn-text">🚀 开始起名</text>
+      </button>
+    </block>
+    <block wx:else>
+      <button class="pay-btn" bindtap="goToPay">
+        <text class="btn-text">💰 解锁无限使用</text>
+      </button>
+      <button class="share-btn" bindtap="shareApp">
+        <text class="btn-text">📱 分享获取次数</text>
+      </button>
+    </block>
+  </view>
+
+  <!-- 服务介绍 -->
+  <view class="services">
+    <view class="service-title">
+      <text class="title-text">🎁 服务特色</text>
+    </view>
+    <view class="service-list">
+      <view class="service-item">
+        <text class="service-dot">•</text>
+        <text class="service-desc">传统八字起名法，科学分析</text>
+      </view>
+      <view class="service-item">
+        <text class="service-dot">•</text>
+        <text class="service-desc">五行平衡，补益命格</text>
+      </view>
+      <view class="service-item">
+        <text class="service-dot">•</text>
+        <text class="service-desc">海量字库，寓意美好</text>
+      </view>
+      <view class="service-item">
+        <text class="service-dot">•</text>
+        <text class="service-desc">专业评分，智能推荐</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户评价 -->
+  <view class="reviews">
+    <view class="review-title">
+      <text class="title-text">💬 用户评价</text>
+    </view>
+    <view class="review-list">
+      <view class="review-item">
+        <view class="review-header">
+          <text class="reviewer">张妈妈</text>
+          <text class="review-rating">⭐⭐⭐⭐⭐</text>
+        </view>
+        <text class="review-content">很专业的起名服务，给宝宝取的名字寓意很好，家人都很满意！</text>
+      </view>
+      <view class="review-item">
+        <view class="review-header">
+          <text class="reviewer">李爸爸</text>
+          <text class="review-rating">⭐⭐⭐⭐⭐</text>
+        </view>
+        <text class="review-content">五行分析很准确，给出的名字建议都很不错，值得推荐！</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer">
+    <text class="footer-text">专业起名 · 贴心服务</text>
+    <text class="contact">联系客服：wechat_naming</text>
+  </view>
+</view>

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>现代化待办事项应用</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .app-title {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-subtitle {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .input-container {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .todo-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .add-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+        }
+
+        .priority-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .priority-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .priority-btn.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .priority-btn.high.active {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        .priority-btn.medium.active {
+            border-color: #ffa726;
+            background: rgba(255, 167, 38, 0.1);
+            color: #ffa726;
+        }
+
+        .priority-btn.low.active {
+            border-color: #66bb6a;
+            background: rgba(102, 187, 106, 0.1);
+            color: #66bb6a;
+        }
+
+        .filter-container {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .todos-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .todos-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .todos-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .todos-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .todos-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .todo-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .todo-item.completed {
+            opacity: 0.7;
+            background: rgba(102, 187, 106, 0.05);
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            color: #666;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .todo-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            margin-right: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .todo-checkbox:hover {
+            border-color: #667eea;
+        }
+
+        .todo-checkbox.checked {
+            background: #66bb6a;
+            border-color: #66bb6a;
+        }
+
+        .todo-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+        }
+
+        .todo-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .todo-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .todo-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .todo-priority {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .priority-medium {
+            background: rgba(255, 167, 38, 0.2);
+            color: #ffa726;
+        }
+
+        .priority-low {
+            background: rgba(102, 187, 106, 0.2);
+            color: #66bb6a;
+        }
+
+        .todo-date {
+            color: #999;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .edit-btn {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .edit-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .delete-btn {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        .delete-btn:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4em;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                margin: 10px;
+                max-width: none;
+            }
+
+            .app-header {
+                padding: 20px;
+            }
+
+            .app-title {
+                font-size: 2em;
+            }
+
+            .input-container {
+                padding: 20px;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .priority-selector {
+                flex-direction: column;
+            }
+
+            .filter-buttons {
+                flex-wrap: wrap;
+            }
+
+            .todo-item {
+                padding: 15px 20px;
+            }
+
+            .stats-container {
+                padding: 15px;
+            }
+
+            .stat-number {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                margin: 5px;
+                border-radius: 15px;
+            }
+
+            .app-title {
+                font-size: 1.5em;
+            }
+
+            .todo-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-header">
+            <h1 class="app-title">
+                <i class="fas fa-tasks"></i>
+                待办事项
+            </h1>
+            <p class="app-subtitle">高效管理您的日常任务</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number" id="totalTasks">0</div>
+                <div class="stat-label">总任务</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="completedTasks">0</div>
+                <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="pendingTasks">0</div>
+                <div class="stat-label">待完成</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="completionRate">0%</div>
+                <div class="stat-label">完成率</div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <div class="priority-selector">
+                <div class="priority-btn high" data-priority="high">
+                    <i class="fas fa-exclamation-triangle"></i> 高优先级
+                </div>
+                <div class="priority-btn medium active" data-priority="medium">
+                    <i class="fas fa-minus"></i> 中优先级
+                </div>
+                <div class="priority-btn low" data-priority="low">
+                    <i class="fas fa-arrow-down"></i> 低优先级
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="text" class="todo-input" placeholder="添加新任务..." id="todoInput">
+                <button class="add-btn" id="addBtn">
+                    <i class="fas fa-plus"></i>
+                    添加
+                </button>
+            </div>
+        </div>
+
+        <div class="filter-container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="pending">待完成</button>
+                <button class="filter-btn" data-filter="completed">已完成</button>
+                <button class="filter-btn" data-filter="high">高优先级</button>
+                <button class="filter-btn" data-filter="medium">中优先级</button>
+                <button class="filter-btn" data-filter="low">低优先级</button>
+            </div>
+        </div>
+
+        <div class="todos-container" id="todosContainer">
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>暂无待办事项</h3>
+                <p>添加您的第一个任务开始高效管理吧！</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        class TodoApp {
+            constructor() {
+                this.todos = JSON.parse(localStorage.getItem('todos')) || [];
+                this.currentFilter = 'all';
+                this.currentPriority = 'medium';
+                this.editingId = null;
+
+                this.initElements();
+                this.bindEvents();
+                this.render();
+                this.updateStats();
+            }
+
+            initElements() {
+                this.todoInput = document.getElementById('todoInput');
+                this.addBtn = document.getElementById('addBtn');
+                this.todosContainer = document.getElementById('todosContainer');
+                this.emptyState = document.getElementById('emptyState');
+                this.totalTasks = document.getElementById('totalTasks');
+                this.completedTasks = document.getElementById('completedTasks');
+                this.pendingTasks = document.getElementById('pendingTasks');
+                this.completionRate = document.getElementById('completionRate');
+                this.progressFill = document.getElementById('progressFill');
+                this.toast = document.getElementById('toast');
+            }
+
+            bindEvents() {
+                this.addBtn.addEventListener('click', () => this.addTodo());
+                this.todoInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addTodo();
+                });
+
+                // 优先级选择
+                document.querySelectorAll('.priority-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.priority-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentPriority = btn.dataset.priority;
+                    });
+                });
+
+                // 过滤器
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentFilter = btn.dataset.filter;
+                        this.render();
+                    });
+                });
+            }
+
+            addTodo() {
+                const text = this.todoInput.value.trim();
+                if (!text) {
+                    this.showToast('请输入任务内容', 'warning');
+                    return;
+                }
+
+                const todo = {
+                    id: Date.now(),
+                    text: text,
+                    completed: false,
+                    priority: this.currentPriority,
+                    createdAt: new Date().toISOString(),
+                    completedAt: null
+                };
+
+                this.todos.unshift(todo);
+                this.todoInput.value = '';
+                this.saveToLocalStorage();
+                this.render();
+                this.updateStats();
+                this.showToast('任务添加成功', 'success');
+            }
+
+            toggleTodo(id) {
+                const todo = this.todos.find(t => t.id === id);
+                if (todo) {
+                    todo.completed = !todo.completed;
+                    todo.completedAt = todo.completed ? new Date().toISOString() : null;
+                    this.saveToLocalStorage();
+                    this.render();
+                    this.updateStats();
+                    this.showToast(todo.completed ? '任务已完成' : '任务已恢复', 'success');
+                }
+            }
+
+            deleteTodo(id) {
+                if (confirm('确定要删除这个任务吗？')) {
+                    this.todos = this.todos.filter(t => t.id !== id);
+                    this.saveToLocalStorage();
+                    this.render();
+                    this.updateStats();
+                    this.showToast('任务已删除', 'success');
+                }
+            }
+
+            editTodo(id) {
+                const todo = this.todos.find(t => t.id === id);
+                if (todo) {
+                    const newText = prompt('编辑任务:', todo.text);
+                    if (newText && newText.trim()) {
+                        todo.text = newText.trim();
+                        this.saveToLocalStorage();
+                        this.render();
+                        this.showToast('任务已更新', 'success');
+                    }
+                }
+            }
+
+            getFilteredTodos() {
+                let filtered = this.todos;
+
+                switch (this.currentFilter) {
+                    case 'pending':
+                        filtered = filtered.filter(t => !t.completed);
+                        break;
+                    case 'completed':
+                        filtered = filtered.filter(t => t.completed);
+                        break;
+                    case 'high':
+                    case 'medium':
+                    case 'low':
+                        filtered = filtered.filter(t => t.priority === this.currentFilter);
+                        break;
+                }
+
+                return filtered;
+            }
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('zh-CN', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            render() {
+                const filteredTodos = this.getFilteredTodos();
+
+                if (filteredTodos.length === 0) {
+                    this.todosContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h3>${this.currentFilter === 'all' ? '暂无待办事项' : '暂无符合条件的任务'}</h3>
+                            <p>${this.currentFilter === 'all' ? '添加您的第一个任务开始高效管理吧！' : '尝试其他筛选条件或添加新任务'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const todosHTML = filteredTodos.map(todo => `
+                    <div class="todo-item ${todo.completed ? 'completed' : ''}" style="animation-delay: ${Math.random() * 0.1}s">
+                        <div class="todo-checkbox ${todo.completed ? 'checked' : ''}"
+                             onclick="todoApp.toggleTodo(${todo.id})"></div>
+                        <div class="todo-content">
+                            <div class="todo-text">${todo.text}</div>
+                            <div class="todo-meta">
+                                <span class="todo-priority priority-${todo.priority}">
+                                    ${todo.priority === 'high' ? '高' : todo.priority === 'medium' ? '中' : '低'}优先级
+                                </span>
+                                <span class="todo-date">创建于 ${this.formatDate(todo.createdAt)}</span>
+                                ${todo.completedAt ? `<span class="todo-date">完成于 ${this.formatDate(todo.completedAt)}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="todo-actions">
+                            <button class="action-btn edit-btn" onclick="todoApp.editTodo(${todo.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="todoApp.deleteTodo(${todo.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                this.todosContainer.innerHTML = todosHTML;
+            }
+
+            updateStats() {
+                const total = this.todos.length;
+                const completed = this.todos.filter(t => t.completed).length;
+                const pending = total - completed;
+                const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+                this.totalTasks.textContent = total;
+                this.completedTasks.textContent = completed;
+                this.pendingTasks.textContent = pending;
+                this.completionRate.textContent = rate + '%';
+                this.progressFill.style.width = rate + '%';
+            }
+
+            saveToLocalStorage() {
+                localStorage.setItem('todos', JSON.stringify(this.todos));
+            }
+
+            showToast(message, type = 'info') {
+                this.toast.textContent = message;
+                this.toast.className = 'toast show';
+
+                setTimeout(() => {
+                    this.toast.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // 初始化应用
+        const todoApp = new TodoApp();
+    </script>
+</body>
+</html>

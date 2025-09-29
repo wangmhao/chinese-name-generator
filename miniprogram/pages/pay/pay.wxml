@@ -1,0 +1,151 @@
+<view class="container">
+  <!-- 顶部说明 -->
+  <view class="header">
+    <view class="header-content">
+      <image class="header-icon" src="/images/crown.png" mode="aspectFit"></image>
+      <text class="header-title">解锁无限使用</text>
+      <text class="header-subtitle">享受专业起名服务，为宝宝取个好名字</text>
+    </view>
+  </view>
+
+  <!-- 价格选择 -->
+  <view class="price-section">
+    <view class="section-title">
+      <text class="title-text">💰 选择套餐</text>
+    </view>
+
+    <view class="price-cards">
+      <!-- 月度套餐 -->
+      <view class="price-card {{selectedPlan === 'monthly' ? 'selected' : ''}}"
+            bindtap="selectPlan" data-plan="monthly">
+        <view class="card-header">
+          <text class="plan-name">月度会员</text>
+          <text class="plan-tag">热门</text>
+        </view>
+        <view class="price">
+          <text class="currency">¥</text>
+          <text class="amount">9.9</text>
+          <text class="period">/月</text>
+        </view>
+        <view class="features">
+          <text class="feature-item">✓ 无限制使用</text>
+          <text class="feature-item">✓ 优先客服支持</text>
+          <text class="feature-item">✓ 新功能优先体验</text>
+        </view>
+      </view>
+
+      <!-- 年度套餐 -->
+      <view class="price-card {{selectedPlan === 'yearly' ? 'selected' : ''}}"
+            bindtap="selectPlan" data-plan="yearly">
+        <view class="card-header">
+          <text class="plan-name">年度会员</text>
+          <text class="plan-tag">省40%</text>
+        </view>
+        <view class="price">
+          <text class="currency">¥</text>
+          <text class="amount">68</text>
+          <text class="period">/年</text>
+        </view>
+        <view class="original-price">原价 ¥118.8</view>
+        <view class="features">
+          <text class="feature-item">✓ 无限制使用</text>
+          <text class="feature-item">✓ 专属客服支持</text>
+          <text class="feature-item">✓ 新功能优先体验</text>
+          <text class="feature-item">✓ 起名报告PDF下载</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 支付方式 -->
+  <view class="payment-method">
+    <view class="section-title">
+      <text class="title-text">💳 支付方式</text>
+    </view>
+
+    <view class="payment-options">
+      <view class="payment-option {{selectedPayment === 'wechat' ? 'selected' : ''}}"
+            bindtap="selectPayment" data-payment="wechat">
+        <image class="payment-icon" src="/images/wechat-pay.png" mode="aspectFit"></image>
+        <text class="payment-name">微信支付</text>
+        <text class="payment-desc">推荐使用</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 优惠信息 -->
+  <view class="promotion">
+    <view class="promotion-item">
+      <text class="promo-tag">限时优惠</text>
+      <text class="promo-text">现在购买，赠送3次分享机会</text>
+    </view>
+    <view class="promotion-item">
+      <text class="promo-tag">无忧退款</text>
+      <text class="promo-text">7天内不满意可全额退款</text>
+    </view>
+  </view>
+
+  <!-- 购买按钮 -->
+  <view class="action-section">
+    <button class="pay-btn" bindtap="handlePay" disabled="{{!selectedPlan || paying}}">
+      <text class="btn-text" wx:if="{{!paying}}">
+        {{selectedPlan === 'monthly' ? '支付 ¥9.9' : '支付 ¥68'}}
+      </text>
+      <text class="btn-text" wx:else>处理中...</text>
+    </button>
+
+    <view class="terms">
+      <text class="terms-text">购买即表示同意</text>
+      <text class="terms-link" bindtap="showTerms">《用户协议》</text>
+    </view>
+  </view>
+
+  <!-- 服务保障 -->
+  <view class="guarantee">
+    <view class="guarantee-title">
+      <text class="title-text">🛡️ 服务保障</text>
+    </view>
+    <view class="guarantee-list">
+      <view class="guarantee-item">
+        <image class="guarantee-icon" src="/images/shield.png" mode="aspectFit"></image>
+        <text class="guarantee-text">安全支付，资金有保障</text>
+      </view>
+      <view class="guarantee-item">
+        <image class="guarantee-icon" src="/images/time.png" mode="aspectFit"></image>
+        <text class="guarantee-text">7天无理由退款</text>
+      </view>
+      <view class="guarantee-item">
+        <image class="guarantee-icon" src="/images/support.png" mode="aspectFit"></image>
+        <text class="guarantee-text">24小时客服支持</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户协议弹窗 -->
+  <view class="modal" wx:if="{{showTermsModal}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">用户协议</text>
+        <text class="modal-close" bindtap="hideTerms">×</text>
+      </view>
+      <view class="modal-body">
+        <scroll-view scroll-y class="terms-content">
+          <text class="terms-section">1. 服务内容</text>
+          <text class="terms-detail">本服务提供专业的宝宝起名功能，包括八字分析、五行平衡、寓意评分等。</text>
+
+          <text class="terms-section">2. 付费标准</text>
+          <text class="terms-detail">月度会员：9.9元/月，年度会员：68元/年。付费后可无限制使用所有功能。</text>
+
+          <text class="terms-section">3. 退款政策</text>
+          <text class="terms-detail">购买后7天内如不满意，可申请全额退款。</text>
+
+          <text class="terms-section">4. 隐私保护</text>
+          <text class="terms-detail">我们严格保护用户隐私，不会泄露用户的个人信息。</text>
+        </scroll-view>
+      </view>
+      <view class="modal-footer">
+        <button class="modal-btn" bindtap="hideTerms">我知道了</button>
+      </view>
+    </view>
+  </view>
+</view>

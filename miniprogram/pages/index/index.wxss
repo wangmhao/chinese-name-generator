@@ -1,0 +1,245 @@
+.container {
+  padding: 0;
+  background: #f8f8f8;
+  min-height: 100vh;
+}
+
+/* 顶部宣传图 */
+.banner {
+  position: relative;
+  height: 400rpx;
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #F4A460 100%);
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+}
+
+.banner-text .title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.banner-text .subtitle {
+  display: block;
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+/* 功能特点 */
+.features {
+  display: flex;
+  justify-content: space-around;
+  padding: 40rpx 30rpx;
+  background: white;
+  margin-bottom: 20rpx;
+}
+
+.feature-item {
+  text-align: center;
+}
+
+.feature-icon {
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 10rpx;
+}
+
+.feature-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 使用状态 */
+.usage-card {
+  margin: 20rpx 30rpx;
+  padding: 30rpx;
+  background: white;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+}
+
+.usage-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.usage-title {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.usage-count {
+  font-size: 32rpx;
+  color: #8B4513;
+  font-weight: bold;
+}
+
+.usage-progress {
+  width: 100%;
+}
+
+/* 按钮样式 */
+.action-buttons {
+  padding: 40rpx 30rpx;
+}
+
+.start-btn, .pay-btn, .share-btn {
+  width: 100%;
+  height: 100rpx;
+  border-radius: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20rpx;
+  border: none;
+  font-weight: bold;
+}
+
+.start-btn {
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  color: white;
+}
+
+.pay-btn {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+  color: white;
+}
+
+.share-btn {
+  background: linear-gradient(135deg, #4ECDC4 0%, #6BCCC4 100%);
+  color: white;
+}
+
+.btn-text {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+/* 服务介绍 */
+.services {
+  margin: 40rpx 30rpx;
+  padding: 30rpx;
+  background: white;
+  border-radius: 20rpx;
+}
+
+.service-title .title-text {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.service-list {
+  padding: 0 20rpx;
+}
+
+.service-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20rpx;
+}
+
+.service-dot {
+  font-size: 24rpx;
+  color: #8B4513;
+  margin-right: 15rpx;
+  margin-top: 6rpx;
+}
+
+.service-desc {
+  font-size: 28rpx;
+  color: #666;
+  flex: 1;
+  line-height: 1.6;
+}
+
+/* 用户评价 */
+.reviews {
+  margin: 40rpx 30rpx;
+  padding: 30rpx;
+  background: white;
+  border-radius: 20rpx;
+}
+
+.review-title .title-text {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.review-list {
+  padding: 0 20rpx;
+}
+
+.review-item {
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background: #f8f8f8;
+  border-radius: 15rpx;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.reviewer {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.review-rating {
+  font-size: 24rpx;
+  color: #FFD700;
+}
+
+.review-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* 底部信息 */
+.footer {
+  padding: 40rpx 30rpx;
+  text-align: center;
+  background: white;
+  margin-top: 40rpx;
+}
+
+.footer-text {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+}
+
+.contact {
+  font-size: 24rpx;
+  color: #999;
+}
