@@ -1,7 +1,7 @@
 App({
   globalData: {
     userInfo: null,
-    webUrl: 'https://your-domain.com/chinese-name-generator.html',
+    webUrl: 'https://wangmhao.github.io/chinese-name-generator/chinese-name-generator.html',
     price: 9.9,
     freeCount: 3
   },
